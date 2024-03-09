@@ -5,6 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import congressMemberData from '@/components/congressMemberData'
+import congressStatsChart from '@/components/congressStatsChart'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +24,7 @@ interface CongressMember extends Record<string, string | number> {
 	ethnicity: string
 }
 
-interface CongressStats {
+export interface CongressStats {
 	network_id: number
 	value: number
 	type: string
@@ -199,7 +200,7 @@ const Page: NextPage = () => {
 				</FormControl>
 			</div>
 			{congressMember && congressMemberData(congressMember)}
-			<p>Coming soon...</p>
+			{statsToShow.length > 0 && congressStatsChart(statsToShow)}
 		</div>
 	)
 }
