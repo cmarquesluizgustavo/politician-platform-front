@@ -1,10 +1,10 @@
-import type { CongressStats } from '@/pages/congress_person_over_time'
+import type { IStats } from '@/types'
 import dynamic from 'next/dynamic'
 import type { Layout, PlotData, PlotType } from 'plotly.js'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 
-export default function congressStatsChart(stats: CongressStats[]) {
+export default function statsChart(stats: IStats[]) {
 	const statsByLabelNetworkType = stats.reduce((acc, stat) => {
 		let title = `${stat.label}-${
 			stat.network_id < 1000 ? 'legislature' : 'year'
@@ -17,9 +17,7 @@ export default function congressStatsChart(stats: CongressStats[]) {
 		acc[title].push(stat)
 
 		return acc
-	}, {} as Record<string, CongressStats[]>)
-
-	console.log({ statsByLabelNetworkType })
+	}, {} as Record<string, IStats[]>)
 
 	const minY = Math.min(...stats.map((stat) => stat.value))
 	const maxY = Math.max(...stats.map((stat) => stat.value))
@@ -38,7 +36,7 @@ export default function congressStatsChart(stats: CongressStats[]) {
 
 			return acc
 		},
-		{} as Record<string, CongressStats[]>
+		{} as Record<string, IStats[]>
 	)
 
 	const statsByLabelLegislature = Object.entries(
@@ -55,7 +53,7 @@ export default function congressStatsChart(stats: CongressStats[]) {
 		}
 
 		return acc
-	}, {} as Record<string, CongressStats[]>)
+	}, {} as Record<string, IStats[]>)
 
 	const minXYear = Math.min(
 		...Object.values(statsByLabelYear)
@@ -93,11 +91,11 @@ export default function congressStatsChart(stats: CongressStats[]) {
 			// type: 'category'
 		},
 		yaxis: {
-			title: 'Per Year',
+			title: 'Similarity Index',
 			range: [minY, maxY]
 		},
 		yaxis2: {
-			title: 'Per Legislature',
+			// title: 'Per Legislature',
 			range: [minY, maxY],
 			overlaying: 'y',
 			side: 'right'
@@ -111,7 +109,8 @@ export default function congressStatsChart(stats: CongressStats[]) {
 			y: stats.map((stat) => stat.value).sort(),
 			type: 'scatter' as PlotType,
 			mode: 'lines+markers' as const,
-			name: label
+			name: label,
+			line: { color: label }
 		})),
 		...Object.entries(statsByLabelLegislature).map(([label, stats]) => ({
 			x: stats.map((stat) => stat.network_id).sort(),
@@ -120,9 +119,11 @@ export default function congressStatsChart(stats: CongressStats[]) {
 			mode: 'lines+markers' as const,
 			name: label,
 			xaxis: 'x2',
-			yaxis: 'y2'
+			yaxis: 'y2',
+			line: { dash: 'dash', color: label },
+			marker: { symbol: 'star' }
 		}))
-	]
+	].sort((a, b) => a.name.localeCompare(b.name))
 
 	return <Plot data={data} layout={layout} />
 }

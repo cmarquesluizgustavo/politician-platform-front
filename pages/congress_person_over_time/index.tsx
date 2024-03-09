@@ -5,11 +5,11 @@ import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import congressMemberData from '@/components/congressMemberData'
-import congressStatsChart from '@/components/congressStatsChart'
+import congressStatsChart from '@/components/statsChart'
+import { IStats } from '@/types'
+import { congressAlgorithms as algorithms } from '@/utils/algorithms'
 
 const inter = Inter({ subsets: ['latin'] })
-
-const algorithms = ['jaccard', 'adamic_adar']
 
 interface CongressMember extends Record<string, string | number> {
 	id: number
@@ -22,13 +22,6 @@ interface CongressMember extends Record<string, string | number> {
 	social_network: string
 	occupation: string
 	ethnicity: string
-}
-
-export interface CongressStats {
-	network_id: number
-	value: number
-	type: string
-	label: string
 }
 
 async function getCongressMembers(): Promise<{ id: number; label: string }[]> {
@@ -67,7 +60,7 @@ async function getCongressMember(id: number): Promise<CongressMember> {
 
 async function getCongresspersonStats(
 	congressperson_id: number
-): Promise<CongressStats[]> {
+): Promise<IStats[]> {
 	console.log('Fetching congressperson stats')
 	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/stats/congressperson/${congressperson_id}`
@@ -75,7 +68,7 @@ async function getCongresspersonStats(
 
 	if (response.ok) {
 		const data = (await response.json()) as {
-			stats: CongressStats[]
+			stats: IStats[]
 		}
 		console.log(data)
 
@@ -94,7 +87,7 @@ const Page: NextPage = () => {
 		null
 	)
 
-	const [congressStats, setCongressStats] = useState<CongressStats[]>([])
+	const [congressStats, setCongressStats] = useState<IStats[]>([])
 
 	const [algorithm, setAlgorithm] = useState<string>(algorithms[0])
 
