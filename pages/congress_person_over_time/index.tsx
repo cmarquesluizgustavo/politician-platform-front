@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import congressMemberData from '@/components/congressMemberData'
+import congressMemberData from '@/components/basicData'
 import congressStatsChart from '@/components/statsChart'
 import { IStats } from '@/types'
 import { congressAlgorithms as algorithms } from '@/utils/algorithms'
@@ -192,7 +192,8 @@ const Page: NextPage = () => {
 					</Select>
 				</FormControl>
 			</div>
-			{congressMember && congressMemberData(congressMember)}
+			{congressMember &&
+				congressMemberData(congressMember, 'Congress Member Data')}
 			{statsToShow.length > 0 && congressStatsChart(statsToShow)}
 		</div>
 	)

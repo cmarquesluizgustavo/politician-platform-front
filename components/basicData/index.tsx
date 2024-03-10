@@ -2,12 +2,13 @@ import * as React from 'react'
 
 const removeKeys = ['social_network']
 
-export default function congressMemberData(
-	data: Record<string, string | number>
+export default function basicData(
+	data: Record<string, string | number>,
+	title: string
 ) {
 	return (
 		<div className="flex flex-col width-max">
-			<h1>Congress Member Data</h1>{' '}
+			<h1>{title}</h1>{' '}
 			{Object.entries(data)
 				.filter(
 					([key]) =>

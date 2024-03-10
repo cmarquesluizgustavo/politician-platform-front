@@ -61,7 +61,7 @@ const Page: NextPage = () => {
 			<div className="flex flex-row w-52 w-max">
 				<p className="text-5xl text-left">Influences Over Time</p>
 			</div>
-			<div className="flex justify-between p-24">
+			<div className="flex justify-between p-14">
 				<FormControl fullWidth className="flex">
 					<InputLabel id="demo-simple-select-label">
 						Algoritmo
