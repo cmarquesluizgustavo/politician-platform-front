@@ -144,7 +144,7 @@ const Page: NextPage = () => {
 			className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
 		>
 			<div className="flex flex-row w-52 w-max">
-				<p className="text-5xl text-left">Congress Person Over Time</p>
+				<p className="text-5xl text-left">Congressperson Over Time</p>
 			</div>
 			<div className="flex justify-between">
 				<Autocomplete
