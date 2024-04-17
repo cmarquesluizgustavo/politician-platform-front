@@ -1,17 +1,17 @@
-import type { NextPage } from 'next'
-import { ReactElement, useEffect, useState } from 'react'
-import { Inter } from 'next/font/google'
-import { IStats } from '@/types'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import { featuresSimilarity as features } from '@/utils/features'
 import statsChart from '@/components/statsChart'
+import { Container } from '@/components/ui/container'
+import { IStats } from '@/types'
+import { networkAlgorithms as algorithms } from '@/utils/algorithms'
+import { featuresSimilarity as features } from '@/utils/features'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import type { NextPage } from 'next'
 
-const inter = Inter({ subsets: ['latin'] })
+import { ReactElement, useEffect, useState } from 'react'
 
-async function getFeatureStats(feature_name: string): Promise<IStats[]> {
+async function getFeatureStats(feature: string): Promise<IStats[]> {
 	console.log('Fetching feature stats')
 	const response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/stats/features/${feature_name}`
+		`${process.env.NEXT_PUBLIC_API_URL}/stats/features/${feature}`
 	)
 
 	if (response.ok) {
@@ -20,27 +20,31 @@ async function getFeatureStats(feature_name: string): Promise<IStats[]> {
 		}
 		console.log(data)
 
-		return data.stats
+		return data.stats.map((stat) => ({
+			...stat,
+			label: stat.label.includes('global_') ? `avg ${feature}` : stat.label
+		}))
 	}
 
 	return []
 }
 
 const Page: NextPage = () => {
-	const [networkStats, setNetworkStats] = useState<IStats[]>([])
+	const [feature, setFeature] = useState<string>(features[0])
+	const [featureStats, setFeatureStats] = useState<IStats[]>([])
 	const [algorithm, setAlgorithm] = useState<string>(algorithms[0])
 
 	useEffect(() => {
 		try {
-			const members = getNetworkStats().then((stats) => {
-				setNetworkStats(stats)
+			getFeatureStats(feature).then((stats) => {
+				setFeatureStats(stats)
 			})
 		} catch (error) {
 			console.error(error)
-			alert('Failed to fetch network stats')
-			setNetworkStats([])
+			alert('Failed to fetch stats')
+			setFeatureStats([])
 		}
-	}, [])
+	}, [feature])
 
 	const algorithmOnChange = async (
 		value: { label: string; id: string } | null
@@ -49,25 +53,58 @@ const Page: NextPage = () => {
 		setAlgorithm(!value ? algorithms[0] : value.id)
 	}
 
-	const statsToShow = networkStats.filter((stat) => stat.type === algorithm)
+	const featureOnChange = async (
+		value: { label: string; id: string } | null
+	) => {
+		console.log('Mutating feature', { value })
+		setFeature(!value ? features[0] : value.id)
+	}
+
+	const statsToShow = featureStats.filter((stat) => stat.type === algorithm)
 
 	return (
-		<div
-			className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-		>
-			<div className="flex flex-row w-52 w-max">
-				<p className="text-5xl text-left">Influences Over Time</p>
-			</div>
-			<div className="flex justify-between p-14">
-				<FormControl fullWidth className="flex">
+		<Container>		
+			<h1 className="text-5xl font-bold">Feature Over Time</h1>
+			<div className="flex gap-4 mt-8">
+				<FormControl fullWidth>
 					<InputLabel id="demo-simple-select-label">
-						Algoritmo
+						Feature
+					</InputLabel>
+					<Select
+						labelId="demo-simple-select-label"
+						id="demo-simple-select"
+						value={feature}
+						label="Feature"
+						onChange={(event, value) => {
+							const props = (value as ReactElement)?.props as {
+								children: string
+								value: string
+							}
+
+							featureOnChange(
+								props && {
+									label: props.children,
+									id: props.value
+								}
+							)
+						}}
+					>
+						{features.map((feature) => (
+							<MenuItem key={feature} value={feature}>
+								{feature}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+				<FormControl fullWidth>
+					<InputLabel id="demo-simple-select-label">
+						Algorithm
 					</InputLabel>
 					<Select
 						labelId="demo-simple-select-label"
 						id="demo-simple-select"
 						value={algorithm}
-						label="Age"
+						label="Algorithm"
 						onChange={(event, value) => {
 							const props = (value as ReactElement)?.props as {
 								children: string
@@ -82,7 +119,6 @@ const Page: NextPage = () => {
 							)
 						}}
 					>
-						{' '}
 						{algorithms.map((algorithm) => (
 							<MenuItem key={algorithm} value={algorithm}>
 								{algorithm}
@@ -92,7 +128,7 @@ const Page: NextPage = () => {
 				</FormControl>
 			</div>
 			{statsToShow.length > 0 && statsChart(statsToShow)}
-		</div>
+		</Container>
 	)
 }
 

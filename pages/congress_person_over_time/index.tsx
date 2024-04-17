@@ -1,15 +1,16 @@
-import type { NextPage } from 'next'
-import { ReactElement, ReactNode, useEffect, useState } from 'react'
-import { Inter } from 'next/font/google'
-import Autocomplete from '@mui/material/Autocomplete'
-import TextField from '@mui/material/TextField'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import congressMemberData from '@/components/basicData'
 import congressStatsChart from '@/components/statsChart'
+import { Container } from '@/components/ui/container'
 import { IStats } from '@/types'
 import { congressAlgorithms as algorithms } from '@/utils/algorithms'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import Autocomplete from '@mui/material/Autocomplete'
+import TextField from '@mui/material/TextField'
+import type { NextPage } from 'next'
 
-const inter = Inter({ subsets: ['latin'] })
+import { ReactElement, useEffect, useState } from 'react'
+
+
 
 interface CongressMember extends Record<string, string | number> {
 	id: number
@@ -140,27 +141,23 @@ const Page: NextPage = () => {
 	const statsToShow = congressStats.filter((stat) => stat.type === algorithm)
 
 	return (
-		<div
-			className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-		>
-			<div className="flex flex-row w-52 w-max">
-				<p className="text-5xl text-left">Congressperson Over Time</p>
-			</div>
-			<div className="flex justify-between">
+		<Container>		
+			<h1 className="text-5xl font-bold">Congress Person Over Time</h1>
+			<div className="flex gap-4 mt-8">
 				<Autocomplete
 					disablePortal
 					id="combo-box-demo"
 					options={congressMembers}
 					sx={{ width: 300 }}
 					renderInput={(params) => (
-						<TextField {...params} label="Congressistas" />
+						<TextField {...params} label="Congressistas"  />
 					)}
 					onChange={(event, value) =>
 						congressMemberOnChange(event, value)
 					}
 					className="flex"
 				/>
-				<FormControl fullWidth className="flex">
+				<FormControl fullWidth>
 					<InputLabel id="demo-simple-select-label">
 						Algoritmo
 					</InputLabel>
@@ -183,7 +180,6 @@ const Page: NextPage = () => {
 							)
 						}}
 					>
-						{' '}
 						{algorithms.map((algorithm) => (
 							<MenuItem key={algorithm} value={algorithm}>
 								{algorithm}
@@ -195,7 +191,7 @@ const Page: NextPage = () => {
 			{congressMember &&
 				congressMemberData(congressMember, 'Congress Member Data')}
 			{statsToShow.length > 0 && congressStatsChart(statsToShow)}
-		</div>
+		</Container>
 	)
 }
 

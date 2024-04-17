@@ -125,5 +125,5 @@ export default function statsChart(stats: IStats[]) {
 		}))
 	].sort((a, b) => a.name.localeCompare(b.name))
 
-	return <Plot data={data} layout={layout} />
+	return (<div className='flex'><Plot data={data} layout={layout} /></div>)
 }

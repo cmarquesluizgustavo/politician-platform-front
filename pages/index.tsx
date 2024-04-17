@@ -1,5 +1,5 @@
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -51,11 +51,9 @@ export default function Home() {
 					</p>
 				</a>
 
-				<a
+				<Link
 					href="./congress_person_over_time"
 					className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-					target="_blank"
-					rel="noopener noreferrer"
 				>
 					<h2 className={`mb-3 text-2xl font-semibold`}>
 						Congressperson Over Time{' '}
@@ -65,12 +63,11 @@ export default function Home() {
 						Visualize how the characteristics of a given
 						congressperson has changed over time.
 					</p>
-				</a>
+				</Link>
 
-				<a
+				<Link
 					href="./network_stats"
 					className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-					target="_blank"
 					rel="noopener noreferrer"
 				>
 					<h2 className={`mb-3 text-2xl font-semibold`}>
@@ -81,10 +78,10 @@ export default function Home() {
 						Choose a given network to see the data of influences and
 						statistics.
 					</p>
-				</a>
+				</Link>
 
-				<a
-					href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
+				<Link
+					href="./feature_over_time"
 					className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
 					target="_blank"
 					rel="noopener noreferrer"
@@ -101,7 +98,7 @@ export default function Home() {
 						Check how different labels of a feature varied over
 						time.
 					</p>
-				</a>
+				</Link>
 			</div>
 		</main>
 	)

@@ -1,10 +1,11 @@
-import type { NextPage } from 'next'
-import { ReactElement, useEffect, useState } from 'react'
-import { Inter } from 'next/font/google'
+import basicData from '@/components/basicData'
+import statsBarChart from '@/components/statsBarChart'
+import { Container } from '@/components/ui/container'
 import { IStats } from '@/types'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import statsBarChart from '@/components/statsBarChart'
-import basicData from '@/components/basicData'
+import type { NextPage } from 'next'
+import { Inter } from 'next/font/google'
+import { ReactElement, useEffect, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -91,14 +92,10 @@ const Page: NextPage = () => {
 		}, {} as Record<string, number>)
 
 	return (
-		<div
-			className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-		>
-			<div className="flex flex-row w-52 w-max">
-				<p className="text-5xl text-left">Network Stats</p>
-			</div>
-			<div className="flex justify-between p-14 w-196">
-				<FormControl className="flex w-196">
+		<Container>
+			<h1 className="text-5xl font-bold">Network Stats</h1>
+			<div className="flex gap-4 mt-8">
+				<FormControl className="flex">
 					<InputLabel id="demo-simple-select-label">
 						NetworkId
 					</InputLabel>
@@ -121,7 +118,6 @@ const Page: NextPage = () => {
 							)
 						}}
 					>
-						{'                                             '}
 						{networkIds.map(({ label, id }) => (
 							<MenuItem key={id} value={id}>
 								{label}
@@ -133,7 +129,7 @@ const Page: NextPage = () => {
 			{Object.keys(netStats).length > 0 &&
 				basicData(netStats, 'Network Stats Basic Data')}
 			{networkStats.length > 0 && statsBarChart(networkStats)}
-		</div>
+		</Container>
 	)
 }
 

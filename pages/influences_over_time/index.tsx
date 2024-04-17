@@ -1,10 +1,11 @@
-import type { NextPage } from 'next'
-import { ReactElement, useEffect, useState } from 'react'
-import { Inter } from 'next/font/google'
-import { IStats } from '@/types'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import { networkAlgorithms as algorithms } from '@/utils/algorithms'
 import statsChart from '@/components/statsChart'
+import { Container } from '@/components/ui/container'
+import { IStats } from '@/types'
+import { networkAlgorithms as algorithms } from '@/utils/algorithms'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import type { NextPage } from 'next'
+import { Inter } from 'next/font/google'
+import { ReactElement, useEffect, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -55,13 +56,9 @@ const Page: NextPage = () => {
 	const statsToShow = networkStats.filter((stat) => stat.type === algorithm)
 
 	return (
-		<div
-			className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-		>
-			<div className="flex flex-row w-52 w-max">
-				<p className="text-5xl text-left">Influences Over Time</p>
-			</div>
-			<div className="flex justify-between p-14">
+		<Container>
+			<h1 className="text-5xl font-bold">Influences Over Time</h1>
+			<div className="flex gap-4 mt-8">
 				<FormControl fullWidth className="flex">
 					<InputLabel id="demo-simple-select-label">
 						Algoritmo
@@ -85,7 +82,6 @@ const Page: NextPage = () => {
 							)
 						}}
 					>
-						{' '}
 						{algorithms.map((algorithm) => (
 							<MenuItem key={algorithm} value={algorithm}>
 								{algorithm}
@@ -95,7 +91,7 @@ const Page: NextPage = () => {
 				</FormControl>
 			</div>
 			{statsToShow.length > 0 && statsChart(statsToShow)}
-		</div>
+		</Container>
 	)
 }
 
