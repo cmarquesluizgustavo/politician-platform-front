@@ -92,9 +92,9 @@ const Page: NextPage = () => {
                         </Select>
                     </FormControl>
                 </div>
-                <div className="w-2/3">
-                    {statsToShow.length > 0 && statsChart(statsToShow)}
-                </div>
+            </div>
+            <div className="w-full mt-4">
+                {statsToShow.length > 0 && statsChart(statsToShow, true)}
             </div>
         </Container>
     )

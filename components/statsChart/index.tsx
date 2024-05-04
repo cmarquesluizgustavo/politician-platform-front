@@ -4,7 +4,7 @@ import type { Layout, PlotData, PlotType } from 'plotly.js'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 
-export default function statsChart(stats: IStats[]) {
+export default function StatsChart(stats: IStats[], sideBySide: boolean = false) {
     const statsByLabelNetworkType = stats.reduce((acc, stat) => {
         let title = `${stat.label}-${
             stat.network_id < 1000 ? 'legislature' : 'year'
@@ -120,7 +120,7 @@ export default function statsChart(stats: IStats[]) {
     }))
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', flexDirection: sideBySide ? 'row' : 'column' }}>
             <div>
                 <Plot data={dataYear} layout={layoutYear} />
             </div>

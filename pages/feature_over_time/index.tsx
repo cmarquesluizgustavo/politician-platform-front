@@ -127,7 +127,7 @@ const Page: NextPage = () => {
 					</Select>
 				</FormControl>
 			</div>
-			{statsToShow.length > 0 && statsChart(statsToShow)}
+			{statsToShow.length > 0 && statsChart(statsToShow, true)}
 		</Container>
 	)
 }
