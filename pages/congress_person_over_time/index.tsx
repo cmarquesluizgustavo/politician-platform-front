@@ -142,72 +142,114 @@ const Page: NextPage = () => {
     <Container>
       <h1 className="text-5xl font-bold">Congressperson Over Time</h1>
       <div className="flex gap-4 mt-8">
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          options={congressMembers}
-          sx={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Congressistas" />
-          )}
-          onChange={(event, value) =>
-            congressMemberOnChange(event, value)
-          }
-          className="flex"
-        />
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Algoritmo</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={algorithm}
-            label="Age"
-            onChange={(event, value) => {
-              const props = (value as ReactElement)?.props as {
-                children: string
-                value: string
-              }
+      <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={congressMembers}
+        sx={{ width: 800}} // Adjust the width as per your preference
+        renderInput={(params) => (
+          <TextField {...params} label="Congressperson" />
+        )}
+        onChange={(event, value) =>
+          congressMemberOnChange(event, value)
+        }
+        className="flex"
+      />
 
-              algorithmOnChange(
-                props && {
-                  label: props.children,
-                  id: props.value
-                }
-              )
-            }}
-          >
-            {algorithms.map((algorithm) => (
-              <MenuItem key={algorithm} value={algorithm}>
-                {algorithm}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <FormControl fullWidth sx={{ minWidth: 20 }}> {/* Adjust the minimum width as per your preference */}
+        <InputLabel id="demo-simple-select-label">Similarity Algorithm</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={algorithm}
+          label="Age"
+          onChange={(event, value) => {
+            const props = (value as ReactElement)?.props as {
+              children: string
+              value: string
+            }
+
+            algorithmOnChange(
+              props && {
+                label: props.children,
+                id: props.value
+              }
+            )
+          }}
+          sx={{ fontSize: 14 }} // Adjust the font size as per your preference
+        >
+          {algorithms.map((algorithm) => (
+            <MenuItem key={algorithm} value={algorithm}>
+              {algorithm}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       </div>
       <div className="flex mt-8">
+      <div className="flex-1">
         {congressMember && (
-          <div className="flex-1 ml-8">
+          <div className="ml-8">
             <h2 className="text-3xl font-bold">Congress Member Data</h2>
             <table className="table-auto mt-4">
               <tbody>
-                {Object.entries(congressMember).map(([key, value]) => (
-                  <tr key={key}>
-                    <td className="border px-4 py-2">{key}</td>
-                    <td className="border px-4 py-2">{value}</td>
-                  </tr>
-                ))}
+                {Object.entries(congressMember).map(([key, value]) => {
+                  // Define label mappings with capitalization
+                  const labelMappings: Record<string, string> = {
+                    name: 'Name',
+                    birth_state: 'Birth State',
+                    education: 'Education',
+                    birth_date: 'Birth Date',
+                    sex: 'Sex',
+                    cpf: 'CPF',
+                    social_network: 'Social Networks',
+                    occupation: 'Occupation',
+                    ethnicity: 'Ethnicity'
+                  };
+                  // print ethiniticy value to terminal for debugging
+                  console.log(key, value)
+                  // Check conditions for rendering
+                  if ((key === 'social_network' && value == "[]") ||
+                      (key === 'ethnicity' && value === 'NaN') ||
+                      (key === 'occupation' && value === 'other')) {
+                    return null; // Skip rendering this row
+                  }
+
+                  // Convert key to capitalized label
+                  const label = labelMappings[key] || key;
+                  const capitalizedKeys = ['name', 'education', 'occupation', 'ethnicity'];
+                  const isCapitalized = capitalizedKeys.includes(key);
+                  const formattedValue = isCapitalized && typeof value === 'string'
+                    ? value.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
+                    : value;
+
+
+                  return (
+                    <tr key={key}>
+                      <td className="border px-4 py-3 font-bold">{label}</td>
+                      <td className="border px-4 py-2">{key === 'birth_date' ? new Date(value).toLocaleDateString() : formattedValue}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         )}
-        {statsToShow.length > 0 && (
-  			<div className="flex-1 ml-8">
-    			<h2 className="text-3xl font-bold">Influences gain over time</h2>
-    				{congressStatsChart(statsToShow)}
-  			</div>
-		)}
       </div>
+      
+      <div className="flex-1 ml-8">
+        {statsToShow.length > 0 && (
+          <div>
+            <h2 className="text-3xl font-bold">Influences gain over time</h2>
+            {congressStatsChart(statsToShow)}
+          </div>
+        )}
+      </div>
+    </div>
+
     </Container>
+  
   )
 }
 
