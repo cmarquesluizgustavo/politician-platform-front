@@ -10,7 +10,7 @@ import type { NextPage } from 'next'
 
 import { ReactElement, useEffect, useState } from 'react'
 
-interface CongressMember extends Record<string, string | number> {
+interface CongressMember extends Record<string, string | number | Buffer> {
   id: number
   name: string
   birth_state: string
@@ -21,6 +21,7 @@ interface CongressMember extends Record<string, string | number> {
   social_network: string
   occupation: string
   ethnicity: string
+  photo: Buffer
 }
 
 async function getCongressMembers(): Promise<{ id: number; label: string }[]> {
@@ -40,7 +41,6 @@ async function getCongressMembers(): Promise<{ id: number; label: string }[]> {
 
   return []
 }
-
 async function getCongressMember(id: number): Promise<CongressMember> {
   console.log('Fetching congress member')
   const response = await fetch(
@@ -50,6 +50,16 @@ async function getCongressMember(id: number): Promise<CongressMember> {
   if (response.ok) {
     const data = await response.json()
     console.log(data)
+
+    // Check if photo exists in the data
+    const photoResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/congressperson/${id}/photo`
+    )
+    if (photoResponse.ok) {
+      const photoData = await photoResponse.json()
+      data.photo = Buffer.from(photoData.photo.data) // Convert photo data to Buffer
+
+    }
 
     return data
   }
@@ -189,9 +199,15 @@ const Page: NextPage = () => {
       </div>
       <div className="flex mt-8">
       <div className="flex-1">
-        {congressMember && (
-          <div className="ml-8">
-            <h2 className="text-3xl font-bold">Congress Member Data</h2>
+      {congressMember && (
+        <div className="ml-8">
+          <h2 className="text-3xl font-bold">Congress Member Data</h2>
+          <img
+            src={`data:image/png;base64,${congressMember.photo}`}
+            alt={congressMember.name}
+            className="mt-4"
+            style={{ maxWidth: '200px' }} // Adjust the max width as per your preference
+          />
             <table className="table-auto mt-4">
               <tbody>
                 {Object.entries(congressMember).map(([key, value]) => {
@@ -210,6 +226,10 @@ const Page: NextPage = () => {
                   // print ethiniticy value to terminal for debugging
                   console.log(key, value)
                   // Check conditions for rendering
+                  // remove photo from the table
+                  if (key === 'photo') {
+                    return null;
+                  }
                   if ((key === 'social_network' && value == "[]") ||
                       (key === 'ethnicity' && value === 'NaN') ||
                       (key === 'occupation' && value === 'other')) {
