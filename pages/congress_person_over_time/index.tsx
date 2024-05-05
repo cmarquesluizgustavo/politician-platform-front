@@ -248,7 +248,12 @@ const Page: NextPage = () => {
                   return (
                     <tr key={key}>
                       <td className="border px-4 py-3 font-bold">{label}</td>
-                      <td className="border px-4 py-2">{key === 'birth_date' ? new Date(value).toLocaleDateString() : formattedValue}</td>
+                      <td className="border px-4 py-2">
+                        {key === 'birth_date' ? 
+                          (typeof value === 'string' ? new Date(value).toLocaleDateString() : value) 
+                          : formattedValue
+                        }
+                      </td>
                     </tr>
                   );
                 })}
