@@ -26,4 +26,4 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 
 # Start the Next.js application
-# CMD ["npm", "start"]
+CMD ["npm", "start"]
