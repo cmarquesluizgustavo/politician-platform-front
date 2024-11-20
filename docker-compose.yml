@@ -1,5 +1,6 @@
 services:
     nextjs-frontend:
+        container_name: nextjs-frontend
         build:
             context: .
             dockerfile: Dockerfile
@@ -9,5 +10,5 @@ services:
             - NODE_ENV=${NODE_ENV}
             - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
         env_file:
-            - .env.local
+            - local.env
         command: npm start
