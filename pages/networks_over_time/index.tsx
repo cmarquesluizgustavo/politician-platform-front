@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import statsChart from '@/components/statsChart'
 import { Container } from '@/components/ui/container'
 import { IStats } from '@/types'
@@ -53,47 +54,57 @@ const Page: NextPage = () => {
 	const statsToShow = networkStats.filter((stat) => stat.type === algorithm)
 
 	return (
-		<Container>
-			<h1 className="text-5xl font-bold">Networks Over Time</h1>
-			<div className="flex mt-8">
-				<div className="w-1/3 pr-4">
-					<FormControl fullWidth className="flex">
-						<InputLabel id="demo-simple-select-label">
-							Similarity Algorithm
-						</InputLabel>
-						<Select
-							labelId="demo-simple-select-label"
-							id="demo-simple-select"
-							value={algorithm}
-							label="Age"
-							onChange={(event, value) => {
-								const props = (value as ReactElement)
-									?.props as {
-									children: string
-									value: string
-								}
-
-								algorithmOnChange(
-									props && {
-										label: props.children,
-										id: props.value
+		<>
+			<Head>
+				<title>Networks Over Time</title>
+				<meta
+					name="description"
+					content="Visualize how the networks features change over
+							time."
+				/>
+			</Head>
+			<Container>
+				<h1 className="text-5xl font-bold">Networks Over Time</h1>
+				<div className="flex mt-8">
+					<div className="w-1/3 pr-4">
+						<FormControl fullWidth className="flex">
+							<InputLabel id="demo-simple-select-label">
+								Similarity Algorithm
+							</InputLabel>
+							<Select
+								labelId="demo-simple-select-label"
+								id="demo-simple-select"
+								value={algorithm}
+								label="Age"
+								onChange={(event, value) => {
+									const props = (value as ReactElement)
+										?.props as {
+										children: string
+										value: string
 									}
-								)
-							}}
-						>
-							{algorithms.map((algorithm) => (
-								<MenuItem key={algorithm} value={algorithm}>
-									{algorithm}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
+
+									algorithmOnChange(
+										props && {
+											label: props.children,
+											id: props.value
+										}
+									)
+								}}
+							>
+								{algorithms.map((algorithm) => (
+									<MenuItem key={algorithm} value={algorithm}>
+										{algorithm}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</div>
 				</div>
-			</div>
-			<div className="w-full mt-4">
-				{statsToShow.length > 0 && statsChart(statsToShow, true)}
-			</div>
-		</Container>
+				<div className="w-full mt-4">
+					{statsToShow.length > 0 && statsChart(statsToShow, true)}
+				</div>
+			</Container>
+		</>
 	)
 }
 

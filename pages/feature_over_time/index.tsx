@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import statsChart from '@/components/statsChart'
 import { Container } from '@/components/ui/container'
 import { IStats } from '@/types'
@@ -22,7 +23,9 @@ async function getFeatureStats(feature: string): Promise<IStats[]> {
 
 		return data.stats.map((stat) => ({
 			...stat,
-			label: stat.label.includes('global_') ? `avg ${feature}` : stat.label
+			label: stat.label.includes('global_')
+				? `avg ${feature}`
+				: stat.label
 		}))
 	}
 
@@ -63,72 +66,84 @@ const Page: NextPage = () => {
 	const statsToShow = featureStats.filter((stat) => stat.type === algorithm)
 
 	return (
-		<Container>		
-			<h1 className="text-5xl font-bold">Feature Over Time</h1>
-			<div className="flex gap-4 mt-8">
-				<FormControl fullWidth>
-					<InputLabel id="demo-simple-select-label">
-						Feature
-					</InputLabel>
-					<Select
-						labelId="demo-simple-select-label"
-						id="demo-simple-select"
-						value={feature}
-						label="Feature"
-						onChange={(event, value) => {
-							const props = (value as ReactElement)?.props as {
-								children: string
-								value: string
-							}
-
-							featureOnChange(
-								props && {
-									label: props.children,
-									id: props.value
+		<>
+			<Head>
+				<title>Feature Over Time</title>
+				<meta
+					name="description"
+					content="Check how different labels of a feature varied over
+							time."
+				/>
+			</Head>
+			<Container>
+				<h1 className="text-5xl font-bold">Feature Over Time</h1>
+				<div className="flex gap-4 mt-8">
+					<FormControl fullWidth>
+						<InputLabel id="demo-simple-select-label">
+							Feature
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							value={feature}
+							label="Feature"
+							onChange={(event, value) => {
+								const props = (value as ReactElement)
+									?.props as {
+									children: string
+									value: string
 								}
-							)
-						}}
-					>
-						{features.map((feature) => (
-							<MenuItem key={feature} value={feature}>
-								{feature}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-				<FormControl fullWidth>
-					<InputLabel id="demo-simple-select-label">
-						Algorithm
-					</InputLabel>
-					<Select
-						labelId="demo-simple-select-label"
-						id="demo-simple-select"
-						value={algorithm}
-						label="Algorithm"
-						onChange={(event, value) => {
-							const props = (value as ReactElement)?.props as {
-								children: string
-								value: string
-							}
 
-							algorithmOnChange(
-								props && {
-									label: props.children,
-									id: props.value
+								featureOnChange(
+									props && {
+										label: props.children,
+										id: props.value
+									}
+								)
+							}}
+						>
+							{features.map((feature) => (
+								<MenuItem key={feature} value={feature}>
+									{feature}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+					<FormControl fullWidth>
+						<InputLabel id="demo-simple-select-label">
+							Algorithm
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							value={algorithm}
+							label="Algorithm"
+							onChange={(event, value) => {
+								const props = (value as ReactElement)
+									?.props as {
+									children: string
+									value: string
 								}
-							)
-						}}
-					>
-						{algorithms.map((algorithm) => (
-							<MenuItem key={algorithm} value={algorithm}>
-								{algorithm}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-			</div>
-			{statsToShow.length > 0 && statsChart(statsToShow, true)}
-		</Container>
+
+								algorithmOnChange(
+									props && {
+										label: props.children,
+										id: props.value
+									}
+								)
+							}}
+						>
+							{algorithms.map((algorithm) => (
+								<MenuItem key={algorithm} value={algorithm}>
+									{algorithm}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				</div>
+				{statsToShow.length > 0 && statsChart(statsToShow, true)}
+			</Container>
+		</>
 	)
 }
 
