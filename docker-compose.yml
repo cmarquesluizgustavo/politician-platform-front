@@ -1,6 +1,7 @@
 services:
-    nextjs-frontend:
-        container_name: nextjs-frontend
+    politicians-front-end:
+        container_name: politicians-front-end
+        image: politicians-front-end
         build:
             context: .
             dockerfile: Dockerfile
@@ -10,5 +11,11 @@ services:
             - NODE_ENV=${NODE_ENV}
             - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
         env_file:
-            - local.env
+            - .env
         command: npm start
+        networks:
+            - politicians_network
+
+networks:
+    politicians_network:
+        driver: bridge
