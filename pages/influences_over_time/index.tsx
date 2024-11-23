@@ -78,7 +78,7 @@ const Page: NextPage = () => {
 								labelId="demo-simple-select-label"
 								id="demo-simple-select"
 								value={algorithm}
-								label="Age"
+								label="Similarity Algorithm"
 								onChange={(event, value) => {
 									const props = (value as ReactElement)
 										?.props as {
