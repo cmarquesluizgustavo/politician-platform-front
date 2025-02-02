@@ -151,15 +151,14 @@ const Page: NextPage = () => {
 	return (
 		<>
 			<Head>
-				<title>Congressperson Over Time</title>
+				<title>Congressista pelo tempo</title>
 				<meta
 					name="description"
-					content="Visualize how the characteristics of a given
-							congressperson has changed over time."
+					content="Visualize como as características de um congressista mudaram ao longo do tempo."
 				/>
 			</Head>
 			<Container>
-				<h1 className="text-5xl font-bold">Congressperson Over Time</h1>
+				<h1 className="text-5xl font-bold">Congressista pelo tempo</h1>
 				<div className="flex gap-4 mt-8">
 					<Autocomplete
 						disablePortal
@@ -167,7 +166,7 @@ const Page: NextPage = () => {
 						options={congressMembers}
 						sx={{ width: 800 }} // Adjust the width as per your preference
 						renderInput={(params) => (
-							<TextField {...params} label="Congressperson" />
+							<TextField {...params} label="Congressista" />
 						)}
 						onChange={(event, value) =>
 							congressMemberOnChange(event, value)
@@ -179,13 +178,14 @@ const Page: NextPage = () => {
 						{' '}
 						{/* Adjust the minimum width as per your preference */}
 						<InputLabel id="demo-simple-select-label">
-							Similarity Algorithm | Node Statistics
+							{/* Similarity Algorithm | Node Statistics */}
+							Algoritmo de Similaridade | Estatísticas de Nó
 						</InputLabel>
 						<Select
 							labelId="demo-simple-select-label"
 							id="demo-simple-select"
 							value={algorithm}
-							label="Similarity Algorithm | Node Statisticsaaa"
+							label="Algoritmo de Similaridade | Estatísticas de Nóaaaa"
 							onChange={(event, value) => {
 								const props = (value as ReactElement)
 									?.props as {
@@ -215,7 +215,7 @@ const Page: NextPage = () => {
 						{congressMember && (
 							<div className="ml-8">
 								<h2 className="text-3xl font-bold">
-									Congress Member Data
+									Dados do Congressista
 								</h2>
 								<img
 									src={`data:image/png;base64,${congressMember.photo}`}
@@ -325,7 +325,7 @@ const Page: NextPage = () => {
 						{statsToShow.length > 0 && (
 							<div>
 								<h2 className="text-3xl font-bold">
-									Influences gain over time
+									Dados das Características ao Longo do Tempo
 								</h2>
 								{congressStatsChart(statsToShow)}
 							</div>

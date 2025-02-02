@@ -56,26 +56,25 @@ const Page: NextPage = () => {
 	return (
 		<>
 			<Head>
-				<title>Networks Over Time</title>
+				<title>Redes pelo tempo</title>
 				<meta
 					name="description"
-					content="Visualize how the networks features change over
-							time."
+					content="Visualize como as características das redes mudam ao longo do tempo."
 				/>
 			</Head>
 			<Container>
-				<h1 className="text-5xl font-bold">Networks Over Time</h1>
+				<h1 className="text-5xl font-bold">Redes pelo tempo</h1>
 				<div className="flex mt-8">
 					<div className="w-1/3 pr-4">
 						<FormControl fullWidth className="flex">
 							<InputLabel id="demo-simple-select-label">
-								Similarity Algorithm
+								Algoritmo de Similaridade
 							</InputLabel>
 							<Select
 								labelId="demo-simple-select-label"
 								id="demo-simple-select"
 								value={algorithm}
-								label="Similarity Algorithm"
+								label="Algoritmo de Similaridade"
 								onChange={(event, value) => {
 									const props = (value as ReactElement)
 										?.props as {

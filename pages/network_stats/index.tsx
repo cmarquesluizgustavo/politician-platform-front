@@ -95,15 +95,14 @@ const Page: NextPage = () => {
 	return (
 		<>
 			<Head>
-				<title>Network Stats</title>
+				<title>Estatísticas de Rede</title>
 				<meta
 					name="description"
-					content="Choose a given network to see the data of influences
-							and statistics."
+					content="Escolha uma rede para ver os dados de influências e estatísticas."
 				/>
 			</Head>
 			<Container>
-				<h1 className="text-5xl font-bold">Network Stats</h1>
+				<h1 className="text-5xl font-bold">Estatísticas de Rede</h1>
 				<div className="flex gap-4 mt-8">
 					<FormControl className="flex">
 						<InputLabel id="demo-simple-select-label">
@@ -143,7 +142,7 @@ const Page: NextPage = () => {
 						{Object.keys(netStats).length > 0 && (
 							<>
 								<h2 className="text-3xl font-bold mb-4">
-									Network Stats Basic Data
+									Estátisticas Básicas da Rede
 								</h2>
 								<table className="table-auto">
 									<tbody>
@@ -167,7 +166,7 @@ const Page: NextPage = () => {
 					{networkStats.length > 0 && (
 						<div className="flex-1 ml-8">
 							<h2 className="text-3xl font-bold mb-4">
-								Features Gains
+								Estátisticas das Características
 							</h2>
 							{statsBarChart(networkStats)}
 						</div>

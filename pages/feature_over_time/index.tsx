@@ -68,25 +68,26 @@ const Page: NextPage = () => {
 	return (
 		<>
 			<Head>
-				<title>Feature Over Time</title>
+				<title>Característica pelo tempo</title>
 				<meta
 					name="description"
-					content="Check how different labels of a feature varied over
-							time."
+					content="Verifique como diferentes rótulos de uma característica variaram ao longo do tempo."
 				/>
 			</Head>
 			<Container>
-				<h1 className="text-5xl font-bold">Feature Over Time</h1>
+				<h1 className="text-5xl font-bold">
+					Característica pelo tempo
+				</h1>
 				<div className="flex gap-4 mt-8">
 					<FormControl fullWidth>
 						<InputLabel id="demo-simple-select-label">
-							Feature
+							Característica
 						</InputLabel>
 						<Select
 							labelId="demo-simple-select-label"
 							id="demo-simple-select"
 							value={feature}
-							label="Feature"
+							label="Característica"
 							onChange={(event, value) => {
 								const props = (value as ReactElement)
 									?.props as {
@@ -111,13 +112,13 @@ const Page: NextPage = () => {
 					</FormControl>
 					<FormControl fullWidth>
 						<InputLabel id="demo-simple-select-label">
-							Algorithm
+							Algoritmo de Similaridade
 						</InputLabel>
 						<Select
 							labelId="demo-simple-select-label"
 							id="demo-simple-select"
 							value={algorithm}
-							label="Algorithm"
+							label="Algoritmo de Similaridade"
 							onChange={(event, value) => {
 								const props = (value as ReactElement)
 									?.props as {

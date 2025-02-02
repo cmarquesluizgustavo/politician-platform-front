@@ -1,24 +1,113 @@
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import Head from 'next/head'
+import Particles from 'react-tsparticles'
+import { loadFull } from 'tsparticles'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+	const particlesInit = async (main: any) => {
+		// Initialize tsparticles instance
+		await loadFull(main)
+	}
+
+	const particlesOptions = {
+		background: {
+			color: {
+				value: '#ffffff' // Set background color to white
+			}
+		},
+		fpsLimit: 60,
+		interactivity: {
+			events: {
+				onHover: {
+					enable: true,
+					mode: 'repulse'
+				},
+				onClick: {
+					enable: true,
+					mode: 'push'
+				}
+			},
+			modes: {
+				repulse: {
+					distance: 50 // Reduce repulse distance for subtle effect
+				},
+				push: {
+					quantity: 2 // Reduce particle quantity on click for subtle effect
+				}
+			}
+		},
+		particles: {
+			color: {
+				// color must be dark grey
+				value: '#333333'
+			},
+			links: {
+				color: '#cccccc',
+				distance: 150, // Shorter link distance for a less overwhelming effect
+				enable: true,
+				opacity: 0.5, // Lower opacity for subtle links
+				width: 1 // Thinner link lines
+			},
+			collisions: {
+				enable: true
+			},
+			move: {
+				direction: 'none' as const,
+				enable: true,
+				outModes: {
+					default: 'bounce' as const
+				},
+				random: false,
+				speed: 1, // Reduce speed for subtle movement
+				straight: false
+			},
+			number: {
+				density: {
+					enable: true,
+					area: 800
+				},
+				value: 50 // Reduce number of particles
+			},
+			opacity: {
+				value: 0.3 // Lower opacity for subtle particles
+			},
+			shape: {
+				type: 'circle' as const
+			},
+			size: {
+				value: { min: 1, max: 3 } // Reduce size range for more subtle particles
+			}
+		},
+		detectRetina: true
+	}
+
 	return (
 		<>
 			<Head>
-				<title>Coauthorship Network Analysis</title>
+				<title>Análise das Redes de Co-autoria</title>
 			</Head>
+			<Particles
+				className="absolute inset-0 -z-10"
+				init={particlesInit}
+				options={particlesOptions}
+			/>
 			<main
 				className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
 			>
 				<div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-					<p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-						{/* Análise de Redes de Coautoria de Deputados Federais&nbsp; */}
-						Coauthorship Network Analysis on Brazilian Federal
-						Congresspeople
-					</p>
+					<a
+						href="https://github.com/cmarquesluizgustavo/Politicians/"
+						className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Uma Plataforma para Análise da Rede de Co-autoria de
+						<br />
+						Projetos de Lei entre Deputados Federais
+					</a>
 					<div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
 						<a
 							className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
@@ -26,67 +115,25 @@ export default function Home() {
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							By Luiz Gustavo Costa Marques de Oliveira
+							por Luiz Gustavo Costa Marques de Oliveira
 						</a>
 					</div>
 				</div>
-
-				{/* <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-				<Image
-					className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-					src="/next.svg"
-					alt="Next.js Logo"
-					width={180}
-					height={37}
-					priority
-				/>
-			</div> */}
-
 				<div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-					<a
+					<Link
 						href="./influences_over_time"
 						className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						<h2 className={`mb-3 text-2xl font-semibold`}>
-							Influences Over Time{' '}
+							Influências pelo tempo{' '}
 						</h2>
 						<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-							Visualize how the influence of a feature changes
-							over time.
-						</p>
-					</a>
-
-					<Link
-						href="./congress_person_over_time"
-						className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-					>
-						<h2 className={`mb-3 text-2xl font-semibold`}>
-							Congressperson Over Time{' '}
-							<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none"></span>
-						</h2>
-						<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-							Visualize how the characteristics of a given
-							congressperson has changed over time.
+							Visualize como a influência de uma característica
+							muda ao longo do tempo.
 						</p>
 					</Link>
-
-					<Link
-						href="./network_stats"
-						className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-						rel="noopener noreferrer"
-					>
-						<h2 className={`mb-3 text-2xl font-semibold`}>
-							Network Statistics{' '}
-							<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none"></span>
-						</h2>
-						<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-							Choose a given network to see the data of influences
-							and statistics.
-						</p>
-					</Link>
-
 					<Link
 						href="./feature_over_time"
 						className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
@@ -94,16 +141,29 @@ export default function Home() {
 						rel="noopener noreferrer"
 					>
 						<h2 className={`mb-3 text-2xl font-semibold`}>
-							Feature
-							<br />
-							Over Time{' '}
+							Característica <br />
+							pelo tempo{' '}
 							<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none"></span>
 						</h2>
 						<p
 							className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}
 						>
-							Check how different labels of a feature varied over
-							time.
+							Visualize como diferentes rótulos de uma
+							característica variaram ao longo do tempo.
+						</p>
+					</Link>
+
+					<Link
+						href="./congress_person_over_time"
+						className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+					>
+						<h2 className={`mb-3 text-2xl font-semibold`}>
+							Congressista pelo tempo{' '}
+							<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none"></span>
+						</h2>
+						<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+							Visualize como as características de um dado
+							congressista mudaram ao longo do tempo.
 						</p>
 					</Link>
 					<Link
@@ -113,12 +173,27 @@ export default function Home() {
 						rel="noopener noreferrer"
 					>
 						<h2 className={`mb-3 text-2xl font-semibold`}>
-							Networks Over Time{' '}
+							Redes pelo tempo{' '}
 							<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none"></span>
 						</h2>
 						<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-							Visualize how the networks features change over
-							time.
+							Visualize como as características de rede mudaram ao
+							longo do tempo.
+						</p>
+					</Link>
+
+					<Link
+						href="./network_stats"
+						className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+						rel="noopener noreferrer"
+					>
+						<h2 className={`mb-3 text-2xl font-semibold`}>
+							Estatísticas de Rede{' '}
+							<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none"></span>
+						</h2>
+						<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+							Escolha uma rede para ver os dados de influências e
+							estatísticas.
 						</p>
 					</Link>
 				</div>
